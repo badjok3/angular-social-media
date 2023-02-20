@@ -6,9 +6,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor, ErrorInterceptor } from '@shared/helpers';
 import { fakeAuthBackendProvider } from '@authentication/helpers';
 import { fakeFeedBackendProvider } from '@feed/helpers';
+import { ButtonComponent } from './components/button/button.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ButtonComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule
