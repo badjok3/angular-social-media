@@ -7,10 +7,12 @@ import { JwtInterceptor, ErrorInterceptor } from '@shared/helpers';
 import { fakeAuthBackendProvider } from '@authentication/helpers';
 import { fakeFeedBackendProvider } from '@feed/helpers';
 import { ButtonComponent } from './components/button/button.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
-    ButtonComponent
+    ButtonComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { ButtonComponent } from './components/button/button.component';
     // provider used to create fake backend
     fakeAuthBackendProvider,
     fakeFeedBackendProvider
-  ]
+  ],
+  exports: [HeaderComponent]
 })
 
 export class SharedModule { }
