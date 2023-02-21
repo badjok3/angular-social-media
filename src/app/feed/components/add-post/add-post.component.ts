@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Post } from '@shared/models/post';
 
