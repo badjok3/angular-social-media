@@ -21,7 +21,7 @@ export class FeedService {
         return this.http.post<Post>(`${environment.apiUrl}/posts`, post);
     }
 
-    deletePost(id: number): Observable<void> {
-        return this.http.delete<void>(`${environment.apiUrl}/posts/${id}`);
+    deletePost(post: Post): Observable<Post['id']> {
+        return this.http.delete<Post['id']>(`${environment.apiUrl}/posts/${post.id}`);
     }
 }

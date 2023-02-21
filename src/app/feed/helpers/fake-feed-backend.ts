@@ -5,10 +5,9 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 import { Post } from '@shared/models/post';
 
-const posts: Post[] = [
+let posts: Post[] = [
     {
         id: 1,
-        title: 'Important Post',
         content: 'Attention all units, this is a very important post',
         author: {
             id: 2,
@@ -20,7 +19,6 @@ const posts: Post[] = [
     },
     {
         id: 2,
-        title: 'Less Important Post',
         content: 'Nothing too much here',
         author: {
             id: 2,
@@ -43,11 +41,19 @@ export class FakeFeedBackendInterceptor implements HttpInterceptor {
             .pipe(materialize()) // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
             .pipe(delay(500))
             .pipe(dematerialize());
-
         function handleRoute() {
             switch (true) {
                 case url.endsWith('/posts') && method === 'GET':
                     return getPosts();
+                case url.endsWith('/posts') && method === 'POST': {
+                    let post = { ...request.body };
+                    post.id = posts.length + 1;
+                    return addPost(post);
+                }
+                case url.indexOf('/posts') > -1 && method === 'DELETE': {
+                    let id = +url.slice(url.lastIndexOf('/') + 1);
+                    return deletePost(id);
+                }
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -58,6 +64,17 @@ export class FakeFeedBackendInterceptor implements HttpInterceptor {
         function getPosts() {
             if (!isLoggedIn()) return unauthorized();
             return ok(posts);
+        }
+
+        function addPost(post: Post) {
+            let currentPosts = posts.slice();
+            currentPosts.push(post);
+            return ok(post);
+        }
+
+        function deletePost(id: Post['id']) {
+            posts.filter(post => post.id !== id);
+            return ok(id);
         }
 
         // helper functions

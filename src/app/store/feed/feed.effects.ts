@@ -4,7 +4,8 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { FeedService } from '@feed/services/feed.service';
-import { loadPosts, loadPostsSuccess, loadPostsFail } from './feed.actions';
+import { loadPosts, loadPostsSuccess, loadPostsFail, addPost, addPostSuccess, addPostFail, deletePost, deletePostSuccess, deletePostFail } from './feed.actions';
+import { Post } from '@shared/models/post';
 
 @Injectable()
 export class FeedEffects {
@@ -17,6 +18,25 @@ export class FeedEffects {
             ))
         )
     );
+
+    addPost$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(addPost),
+            mergeMap((post: Post) => this.feedService.addPost(post).pipe(
+                map(post => addPostSuccess(post)),
+                catchError((error) => of(addPostFail({ error })))
+            ))
+        )
+    );
+
+    deletePost$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(deletePost),
+            mergeMap((post: Post) => this.feedService.deletePost(post).pipe(
+                map(id => deletePostSuccess({ id })),
+                catchError((error) => of(deletePostFail({ error })))
+            ))
+        ))
 
     constructor(private actions$: Actions, private feedService: FeedService) { }
 }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Post } from '@shared/models/post';
 
-import { loadPosts } from '@store/feed/feed.actions';
+import { deletePost, loadPosts } from '@store/feed/feed.actions';
 import { getPostsSelector } from '@store/feed/feed.selectors';
 import { FeedState } from '@store/feed/feed.reducer';
 
@@ -23,5 +23,9 @@ export class FeedComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadPosts());
+  }
+
+  deletePost(post: Post): void {
+    this.store.dispatch(deletePost(post));
   }
 }
