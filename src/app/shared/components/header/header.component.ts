@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '@shared/services';
 
 import { User } from '@shared/models';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-header',
@@ -16,13 +17,15 @@ export class HeaderComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private toastr: ToastrService
   ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
   logout() {
     this.authenticationService.logout();
+    this.toastr.success('Logout successful', 'Success!');
     this.router.navigate(['/login']);
   }
 }
