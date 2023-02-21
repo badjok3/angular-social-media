@@ -1,0 +1,15 @@
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 5rem;
+    padding: 2rem 10rem;
+
+    .nav-item {
+        color: #fff;
+    }
+
+    .nav-item:hover {
+        cursor: pointer;
+    }
+}
